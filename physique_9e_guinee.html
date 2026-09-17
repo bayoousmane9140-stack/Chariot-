@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Physique 9e Guinée</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial;background:#f4f7fb;color:#172033}
+header{background:#163b65;color:white;padding:18px 16px;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:22px}header p{margin:4px 0 0;opacity:.85}
+main{max-width:720px;margin:auto;padding:16px 14px 90px}
+.card{background:white;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 3px 14px #00000010}
+button{border:0;border-radius:12px;padding:12px 15px;font-size:15px;cursor:pointer;background:#163b65;color:white}
+button.secondary{background:#e8eef6;color:#163b65}.row{display:flex;gap:8px;flex-wrap:wrap}
+.progress{height:10px;background:#e5eaf1;border-radius:20px;overflow:hidden}.bar{height:100%;background:#1e8a55;width:0}
+.lesson h2{margin-top:0}.tag{display:inline-block;background:#eaf2ff;color:#24558a;padding:5px 9px;border-radius:20px;font-size:12px}
+.option{display:block;width:100%;text-align:left;margin:8px 0;background:#f1f4f8;color:#172033}.option:hover{background:#e1e9f3}
+.correct{background:#ccefdc!important}.wrong{background:#ffd8d8!important}
+nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #ddd;padding:9px;display:flex;justify-content:center;gap:8px;z-index:5}
+nav button{flex:1;max-width:220px}.small{font-size:13px;color:#637084}.formula{font-size:20px;font-weight:700;text-align:center;background:#f7f9fc;padding:12px;border-radius:10px}
+</style>
+</head>
+<body>
+<header><h1>Physique – 9ème année 🇬🇳</h1><p>Cours, résumés, exercices et quiz</p></header>
+<main id="app"></main>
+<nav><button onclick="home()">📚 Cours</button><button onclick="quiz()">📝 Quiz</button><button onclick="stats()">🏆 Progression</button></nav>
+<script>
+const lessons=[
+{title:"Introduction à la physique",tag:"Les bases",body:`<p>La physique est une science qui étudie les phénomènes naturels, la matière, le mouvement, les forces, l'énergie, la lumière, la chaleur et l'électricité.</p><h3>Objectifs</h3><ul><li>Identifier une grandeur physique.</li><li>Utiliser une unité adaptée.</li><li>Effectuer des mesures simples.</li></ul><h3>À retenir</h3><p>Une mesure s'exprime avec une <b>valeur numérique</b> et une <b>unité</b>. Exemple : 5 m.</p>`},
+{title:"Mouvement et vitesse",tag:"Mécanique",body:`<p>Un objet est en mouvement si sa position change par rapport à un référentiel au cours du temps.</p><h3>Vitesse moyenne</h3><div class="formula">v = d ÷ t</div><p>v est la vitesse, d la distance parcourue et t la durée. Les unités courantes sont m/s et km/h.</p><h3>Exemple</h3><p>Si un élève parcourt 100 m en 20 s : v = 100 ÷ 20 = <b>5 m/s</b>.</p><h3>À retenir</h3><p>Plus une distance est parcourue rapidement, plus la vitesse moyenne est grande.</p>`},
+{title:"Forces et équilibre",tag:"Mécanique",body:`<p>Une force est une action capable de modifier le mouvement d'un objet ou de le déformer.</p><h3>Exemples</h3><ul><li>Le poids agit vers le bas.</li><li>Une poussée peut mettre un objet en mouvement.</li><li>Une réaction d'un support peut empêcher un objet de tomber.</li></ul><h3>Équilibre</h3><p>Un objet est en équilibre lorsque les actions mécaniques qui s'exercent sur lui se compensent.</p><h3>À retenir</h3><p>Une force possède une direction, un sens, une intensité et un point d'application.</p>`},
+{title:"Électricité : circuit simple",tag:"Électricité",body:`<p>Un circuit électrique permet la circulation du courant lorsqu'il forme une boucle fermée.</p><h3>Éléments</h3><ul><li>Générateur : fournit l'énergie électrique.</li><li>Récepteur : utilise l'énergie électrique.</li><li>Interrupteur : ouvre ou ferme le circuit.</li><li>Fils conducteurs : relient les éléments.</li></ul><h3>À retenir</h3><p>Dans un circuit ouvert, le courant ne circule pas. Dans un circuit fermé, il peut circuler.</p>`},
+{title:"Tension et intensité",tag:"Électricité",body:`<p>La <b>tension électrique</b> se mesure en volts (V) avec un voltmètre. L'<b>intensité du courant</b> se mesure en ampères (A) avec un ampèremètre.</p><h3>À retenir</h3><ul><li>Tension → volt (V).</li><li>Intensité → ampère (A).</li><li>Résistance → ohm (Ω).</li></ul><p>Dans les exercices, il faut toujours vérifier les unités avant de calculer.</p>`},
+{title:"Lumière et optique",tag:"Optique",body:`<p>La lumière se propage généralement en ligne droite dans un milieu homogène et transparent.</p><h3>Sources de lumière</h3><p>Une source primaire produit sa propre lumière, comme le Soleil ou une lampe. Un objet éclairé peut diffuser la lumière qu'il reçoit.</p><h3>Ombre</h3><p>Une ombre apparaît lorsqu'un objet opaque bloque une partie de la lumière.</p><h3>À retenir</h3><p>La lumière permet à l'œil de voir les objets lorsqu'elle atteint l'œil après émission ou diffusion.</p>`},
+{title:"Chaleur et température",tag:"Thermique",body:`<p>La température indique l'état thermique d'un corps. Elle se mesure avec un thermomètre.</p><p>Dans la vie courante, on utilise principalement le degré Celsius (°C).</p><h3>Chaleur</h3><p>La chaleur est un transfert d'énergie thermique d'un corps plus chaud vers un corps plus froid.</p><h3>À retenir</h3><p>Température et chaleur sont liées mais ne désignent pas exactement la même chose.</p>`}
+];
+
+const questions=[
+["Quelle est l'unité SI de la vitesse ?","m/s","km","N","V","A"],
+["Un objet parcourt 100 m en 20 s. Quelle est sa vitesse moyenne ?","5 m/s","2 m/s","20 m/s","120 m/s","A"],
+["Quelle grandeur se mesure en volts ?","La tension","La masse","La distance","La durée","A"],
+["Quel appareil mesure l'intensité du courant ?","L'ampèremètre","Le voltmètre","Le thermomètre","La balance","A"],
+["Dans quel cas un courant peut-il circuler dans un circuit simple ?","Circuit fermé","Circuit ouvert","Circuit sans générateur","Circuit sans conducteurs","A"],
+["Quelle unité correspond à une force ?","Newton","Volt","Ampère","Ohm","A"],
+["Avec quel appareil mesure-t-on la température ?","Thermomètre","Voltmètre","Ampèremètre","Chronomètre","A"],
+["Que se passe-t-il lorsqu'un objet opaque bloque la lumière ?","Une ombre peut apparaître","La lumière devient du son","La température devient nulle","Le courant augmente","A"]
+];
+
+let state=JSON.parse(localStorage.getItem("phys9")||'{"done":[],"score":0,"answered":0}');
+function save(){localStorage.setItem("phys9",JSON.stringify(state))}
+function home(){
+document.getElementById("app").innerHTML=`<div class="card"><h2>Bienvenue 👋</h2><p>Apprends les notions essentielles de physique, puis teste tes connaissances.</p><div class="progress"><div class="bar" style="width:${Math.min(100,state.done.length/lessons.length*100)}%"></div></div><p class="small">${state.done.length}/${lessons.length} leçons étudiées</p></div><div class="card"><h2>Programme</h2>${lessons.map((l,i)=>`<div class="card"><span class="tag">${l.tag}</span><h3>${i+1}. ${l.title}</h3><button onclick="lesson(${i})">${state.done.includes(i)?"Revoir":"Commencer"}</button></div>`).join("")}</div>`;
+}
+function lesson(i){state.done=[...new Set([...state.done,i])];save();let l=lessons[i];document.getElementById("app").innerHTML=`<div class="card lesson"><span class="tag">${l.tag}</span><h2>${i+1}. ${l.title}</h2>${l.body}<div class="row"><button ${i?`onclick="lesson(${i-1})"`:"disabled"}>← Précédent</button><button ${i<lessons.length-1?`onclick="lesson(${i+1})"`:"disabled"}>Suivant →</button></div></div>`}
+function quiz(){
+let q=questions[Math.floor(Math.random()*questions.length)], correct=q[6];let opts=q.slice(1,5);document.getElementById("app").innerHTML=`<div class="card"><span class="tag">Quiz rapide</span><h2>${q[0]}</h2>${opts.map((x,i)=>`<button class="option" onclick="answer(this,'${String.fromCharCode(65+i)}','${correct}')">${x}</button>`).join("")}<p id="feedback"></p></div><div class="card"><p>Score : <b>${state.score}</b> / ${state.answered}</p><button onclick="quiz()">Question suivante</button></div>`}
+function answer(btn,v,c){if(document.querySelector(".option.correct,.option.wrong"))return;state.answered++;if(v===c){state.score++;btn.classList.add("correct");document.getElementById("feedback").innerHTML="✅ Bonne réponse !"}else{btn.classList.add("wrong");document.getElementById("feedback").innerHTML="❌ Réponse incorrecte. Réessaie avec la question suivante."}save();document.querySelector(".card:nth-of-type(2) p").innerHTML=`Score : <b>${state.score}</b> / ${state.answered}`}
+function stats(){let pct=state.answered?Math.round(state.score/state.answered*100):0;document.getElementById("app").innerHTML=`<div class="card"><h2>🏆 Ma progression</h2><h3>${state.done.length}/${lessons.length} leçons terminées</h3><div class="progress"><div class="bar" style="width:${state.done.length/lessons.length*100}%"></div></div><h3>Quiz</h3><p>${state.score} bonne(s) réponse(s) sur ${state.answered}</p><p><b>${pct}%</b> de réussite</p><button class="secondary" onclick="reset()">Réinitialiser la progression</button></div>`}
+function reset(){if(confirm("Réinitialiser la progression ?")){state={done:[],score:0,answered:0};save();home()}}
+home();
+</script>
+</body></html>
